@@ -1,51 +1,163 @@
 ﻿<%- include("../partials/header") %>
 
 <div class="container-fluid py-4">
-    <h2 class="mb-4">Manage Users</h2>
-    
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Blood Group</th>
-                    <th>City</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% users.forEach(user => { %>
-                    <tr>
-                        <td><%= user.name %></td>
-                        <td><%= user.email %></td>
-                        <td><span class="badge bg-danger"><%= user.bloodGroup %></span></td>
-                        <td><%= user.city || "N/A" %></td>
-                        <td>
-                            <% if (user.verificationStatus === "verified") { %>
-                                <span class="badge bg-success">Verified</span>
-                            <% } else if (user.verificationStatus === "pending") { %>
-                                <span class="badge bg-warning">Pending</span>
-                            <% } else { %>
-                                <span class="badge bg-danger">Rejected</span>
-                            <% } %>
-                        </td>
-                        <td>
-                            <form action="/admin/verify-donor/<%= user._id %>" method="POST" style="display:inline;">
-                                <button class="btn btn-success btn-sm">Verify</button>
-                            </form>
-                            <form action="/admin/toggle-block/<%= user._id %>" method="POST" style="display:inline;">
-                                <button class="btn btn-warning btn-sm">Toggle Block</button>
-                            </form>
-                            <form action="/admin/delete-user/<%= user._id %>" method="POST" style="display:inline;">
-                                <button class="btn btn-danger btn-sm" onclick="return confirm("Delete this user?")">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
+    <h2 class="mb-4">
+        <i class="fas fa-users me-2"></i>Manage Users
+        <span class="badge bg-primary ms-2"><%= totalPages ? users.length + ((currentPage-1)*20) : 0 %> users</span>
+    </h2>
+
+    <!-- Search & Filters -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form action="/admin/users" method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="search" placeholder="Search by name, email, phone, city..." value="<%= query.search || '' %>">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" name="verification">
+                        <option value="">All Status</option>
+                        <option value="verified" <%= query.verification === 'verified' ? 'selected' : '' %>>Verified</option>
+                        <option value="pending" <%= query.verification === 'pending' ? 'selected' : '' %>>Pending</option>
+                        <option value="rejected" <%= query.verification === 'rejected' ? 'selected' : '' %>>Rejected</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" name="bloodGroup">
+                        <option value="">All Blood Groups</option>
+                        <% ['A+','A-','B+','B-','AB+','AB-','O+','O-'].forEach(group => { %>
+                            <option value="<%= group %>" <%= query.bloodGroup === group ? 'selected' : '' %>><%= group %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-danger w-100">
+                        <i class="fas fa-search me-1"></i> Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-danger">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Blood Group</th>
+                            <th>City</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Verification</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (users && users.length > 0) { %>
+                            <% users.forEach((user, index) => { %>
+                                <tr>
+                                    <td><%= (currentPage - 1) * 20 + index + 1 %></td>
+                                    <td>
+                                        <strong><%= user.name %></strong>
+                                        <% if (user.isBlocked) { %>
+                                            <span class="badge bg-danger">Blocked</span>
+                                        <% } %>
+                                    </td>
+                                    <td><small><%= user.email %></small></td>
+                                    <td><%= user.phone %></td>
+                                    <td><span class="badge bg-danger"><%= user.bloodGroup || 'N/A' %></span></td>
+                                    <td><%= user.city || 'N/A' %></td>
+                                    <td>
+                                        <% if (user.role === 'admin') { %>
+                                            <span class="badge bg-dark">Admin</span>
+                                        <% } else { %>
+                                            <span class="badge bg-secondary">User</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if (user.isActive) { %>
+                                            <span class="badge bg-success">Active</span>
+                                        <% } else { %>
+                                            <span class="badge bg-warning">Inactive</span>
+                                        <% } %>
+                                        <% if (user.availability) { %>
+                                            <span class="badge bg-info">Available</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if (user.verificationStatus === 'verified') { %>
+                                            <span class="badge bg-success">Verified</span>
+                                        <% } else if (user.verificationStatus === 'pending') { %>
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        <% } else if (user.verificationStatus === 'rejected') { %>
+                                            <span class="badge bg-danger">Rejected</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <% if (user.verificationStatus !== 'verified') { %>
+                                                <form action="/admin/verify-donor/<%= user._id %>" method="POST" style="display:inline;">
+                                                    <button class="btn btn-success btn-sm" title="Verify">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                </form>
+                                            <% } %>
+                                            <% if (user.verificationStatus !== 'rejected') { %>
+                                                <form action="/admin/reject-donor/<%= user._id %>" method="POST" style="display:inline;">
+                                                    <button class="btn btn-warning btn-sm" title="Reject">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </form>
+                                            <% } %>
+                                            <form action="/admin/toggle-block/<%= user._id %>" method="POST" style="display:inline;">
+                                                <button class="btn btn-<%= user.isBlocked ? 'secondary' : 'warning' %> btn-sm" 
+                                                        title="<%= user.isBlocked ? 'Unblock' : 'Block' %>">
+                                                    <i class="fas fa-<%= user.isBlocked ? 'unlock' : 'lock' %>"></i>
+                                                </button>
+                                            </form>
+                                            <form action="/admin/delete-user/<%= user._id %>" method="POST" style="display:inline;"
+                                                  onsubmit="return confirm('Are you sure you want to delete <%= user.name %>?')">
+                                                <button class="btn btn-danger btn-sm" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="10" class="text-center py-4">
+                                    <i class="fas fa-users-slash fa-3x text-muted mb-3"></i>
+                                    <h5 class="text-muted">No users found</h5>
+                                    <p>Run <code>node seed.js</code> to generate sample users</p>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <% if (totalPages > 1) { %>
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <% for(let i = 1; i <= totalPages; i++) { %>
+                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                <a class="page-link" href="/admin/users?page=<%= i %><%= query.search ? '&search=' + query.search : '' %><%= query.verification ? '&verification=' + query.verification : '' %><%= query.bloodGroup ? '&bloodGroup=' + query.bloodGroup : '' %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            <% } %>
+        </div>
     </div>
 </div>
 

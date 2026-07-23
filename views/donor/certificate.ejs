@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Certificate - BloodConnect</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Georgia', serif; 
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .certificate {
+            width: 800px;
+            background: white;
+            padding: 40px;
+            border: 15px double #dc2626;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid #dc2626;
+        }
+        .cert-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .cert-header h1 {
+            font-size: 36px;
+            color: #dc2626;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .cert-header .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .cert-body {
+            text-align: center;
+            padding: 20px;
+        }
+        .cert-body h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .donor-name {
+            font-size: 32px;
+            color: #dc2626;
+            font-weight: bold;
+            border-bottom: 2px solid #dc2626;
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+        .cert-details {
+            background: #fef3f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cert-details table {
+            width: 100%;
+        }
+        .cert-details td {
+            padding: 8px;
+            border-bottom: 1px solid #fecaca;
+        }
+        .cert-details td:first-child {
+            font-weight: bold;
+            color: #666;
+            width: 40%;
+        }
+        .cert-footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .stamp {
+            color: #dc2626;
+            font-size: 48px;
+            opacity: 0.3;
+            transform: rotate(-15deg);
+            position: absolute;
+            right: 80px;
+            bottom: 100px;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 10px 30px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-print { background: #dc2626; color: white; }
+        .btn-back { background: #666; color: white; }
+        @media print {
+            body { background: white; }
+            .buttons { display: none; }
+            .certificate { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align:center;">
+        <div class="certificate" id="certificate">
+            <div class="stamp">🩸</div>
+            
+            <div class="cert-header">
+                <h1>BloodConnect</h1>
+                <p class="subtitle">Blood Donation Portal - Saving Lives Together</p>
+                <hr style="border-color: #dc2626; margin: 10px 0;">
+                <h1 style="font-size: 28px; color: #dc2626;">Certificate of Appreciation</h1>
+            </div>
+            
+            <div class="cert-body">
+                <p style="font-size: 18px; color: #666;">This certificate is proudly presented to</p>
+                <br>
+                <div class="donor-name"><%= user.name %></div>
+                <br><br>
+                <p style="font-size: 18px; color: #333;">
+                    For the noble act of <strong>Blood Donation</strong> and contribution<br>
+                    towards saving precious lives.
+                </p>
+                
+                <div class="cert-details">
+                    <table>
+                        <tr><td>Certificate ID</td><td>: <%= certificateId %></td></tr>
+                        <tr><td>Blood Group</td><td>: <strong style="color:#dc2626;"><%= user.bloodGroup %></strong></td></tr>
+                        <tr><td>Units Donated</td><td>: <strong><%= donation.units %> unit(s)</strong></td></tr>
+                        <tr><td>Hospital</td><td>: <%= donation.hospital %></td></tr>
+                        <tr><td>Date of Donation</td><td>: <%= new Date(donation.date).toLocaleDateString("en-IN", { year: 'numeric', month: 'long', day: 'numeric' }) %></td></tr>
+                        <% if (donation.patientName) { %>
+                            <tr><td>Patient</td><td>: <%= donation.patientName %></td></tr>
+                        <% } %>
+                        <tr><td>Total Donations</td><td>: <strong><%= user.donationHistory.length %></strong></td></tr>
+                        <tr><td>Issue Date</td><td>: <%= date %></td></tr>
+                    </table>
+                </div>
+                
+                <p style="font-size: 16px; color: #333; margin-top: 20px;">
+                    <em>"Your blood donation can give someone another chance at life. <br>One donation can save up to three lives."</em>
+                </p>
+            </div>
+            
+            <div class="cert-footer">
+                <table style="width: 100%; margin-top: 40px;">
+                    <tr>
+                        <td style="text-align: center;">
+                            <img src="https://cdn-icons-png.flaticon.com/512/1040/1040254.png" width="60" style="opacity:0.5;"><br>
+                            <span style="color:#666;">BloodConnect © <%= new Date().getFullYear() %></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button class="btn btn-print" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Certificate
+            </button>
+            <a href="/donor/dashboard" class="btn btn-back">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

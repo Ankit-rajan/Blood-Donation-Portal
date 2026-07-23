@@ -7,8 +7,6 @@ const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET || "blood_donation_jwt_secret_key_2024_secure", { expiresIn: "30d" });
 };
 
-// ADMIN SECRET CODE - Change this to your own secret code!
-// const ADMIN_SECRET_CODE = "admin123";
 const ADMIN_SECRET_CODE = process.env.ADMIN_SECRET_CODE || "admin123";
 
 exports.register = async (req, res) => {
@@ -21,22 +19,41 @@ exports.register = async (req, res) => {
             return res.redirect("/auth/register");
         }
 
-        // Check if admin code is correct
         const role = (adminCode && adminCode === ADMIN_SECRET_CODE) ? "admin" : "user";
 
         const user = await User.create({ 
             name, email, password, phone, bloodGroup, city, state, role 
         });
 
-        // Try to send welcome email
+        // Send welcome email
         try {
             await sendEmail({
                 email: user.email,
-                subject: "Welcome to Blood Donation Portal",
-                html: emailTemplates.welcomeEmail(user)
+                subject: "🎉 Welcome to BloodConnect - Registration Successful!",
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                        <h2 style="color: #dc2626;">Welcome to BloodConnect!</h2>
+                        <p>Dear <strong>${user.name}</strong>,</p>
+                        <p>Thank you for registering with BloodConnect - Blood Donation Portal.</p>
+                        <p>Your account has been created successfully as a <strong>${user.role}</strong>.</p>
+                        <p><strong>Your Details:</strong></p>
+                        <ul>
+                            <li>Blood Group: ${user.bloodGroup}</li>
+                            <li>City: ${user.city || "Not set"}</li>
+                            <li>Status: Pending Verification</li>
+                        </ul>
+                        <p>Complete your profile and upload documents to become a verified donor.</p>
+                        <a href="${process.env.BASE_URL || 'http://localhost:3000'}/auth/login" 
+                           style="background-color: #dc2626; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                            Login Now
+                        </a>
+                        <p style="margin-top: 20px;">Together we can save lives! 🩸</p>
+                    </div>
+                `
             });
+            console.log("✅ Welcome email sent to:", user.email);
         } catch (emailErr) {
-            console.log("Email not sent (OK):", emailErr.message);
+            console.log("⚠️ Welcome email failed:", emailErr.message);
         }
 
         const token = generateToken(user._id);
@@ -52,7 +69,6 @@ exports.register = async (req, res) => {
         req.session.userId = user._id;
         req.session.success_msg = "Registration successful! Welcome to Blood Donation Portal";
         
-        // Redirect admin to admin dashboard
         if (user.role === "admin") {
             return res.redirect("/admin/dashboard");
         }
@@ -88,6 +104,38 @@ exports.login = async (req, res) => {
 
         user.lastLogin = Date.now();
         await user.save({ validateBeforeSave: false });
+
+        // 🔔 Send Login Alert Email
+        try {
+            const loginTime = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+            await sendEmail({
+                email: user.email,
+                subject: "🔐 New Login to Your BloodConnect Account",
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                        <h2 style="color: #dc2626;">New Login Alert</h2>
+                        <p>Dear <strong>${user.name}</strong>,</p>
+                        <p>Your BloodConnect account was just logged into.</p>
+                        <div style="background-color: #f3f4f6; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                            <p><strong>Login Details:</strong></p>
+                            <ul>
+                                <li>Time: ${loginTime} (IST)</li>
+                                <li>Email: ${user.email}</li>
+                                <li>Role: ${user.role}</li>
+                            </ul>
+                        </div>
+                        <p style="color: #dc2626;"><strong>If this wasn't you, please change your password immediately!</strong></p>
+                        <a href="${process.env.BASE_URL || 'http://localhost:3000'}/donor/dashboard" 
+                           style="background-color: #dc2626; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                            Go to Dashboard
+                        </a>
+                    </div>
+                `
+            });
+            console.log("✅ Login alert sent to:", user.email);
+        } catch (emailErr) {
+            console.log("⚠️ Login alert failed:", emailErr.message);
+        }
 
         const token = generateToken(user._id);
         
@@ -126,6 +174,31 @@ exports.forgotPassword = async (req, res) => {
         user.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
         user.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
         await user.save({ validateBeforeSave: false });
+
+        // Send password reset email
+        try {
+            const resetUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/auth/reset-password/${resetToken}`;
+            await sendEmail({
+                email: user.email,
+                subject: "🔑 Password Reset Request - BloodConnect",
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                        <h2 style="color: #dc2626;">Password Reset Request</h2>
+                        <p>Dear <strong>${user.name}</strong>,</p>
+                        <p>You requested to reset your password. Click the button below:</p>
+                        <a href="${resetUrl}" 
+                           style="background-color: #dc2626; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-size: 16px;">
+                            Reset Password
+                        </a>
+                        <p style="margin-top: 20px;">This link expires in 30 minutes.</p>
+                        <p>If you didn't request this, ignore this email.</p>
+                    </div>
+                `
+            });
+            console.log("✅ Password reset email sent to:", user.email);
+        } catch (emailErr) {
+            console.log("⚠️ Password reset email failed:", emailErr.message);
+        }
 
         req.session.success_msg = "Password reset link sent to your email";
         return res.redirect("/auth/login");
