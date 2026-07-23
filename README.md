@@ -28,7 +28,52 @@ A professional, full-stack Blood Donation Portal built with Node.js, Express.js,
 - [Contributing](#-contributing)
 - [Author](#-author)
 
----
+
+
+
+
+
+## 🔧 Quick Setup Guide for Beginners
+
+### Step 1: Install Node.js
+1. Download from: https://nodejs.org (LTS version)
+2. Install - keep all default settings
+3. Verify: Open CMD, type `node --version`
+
+### Step 2: Get MongoDB (Choose ONE)
+**Option A: MongoDB Atlas (Cloud - Easiest, FREE)**
+1. Go to: https://www.mongodb.com/cloud/atlas
+2. Click "Try Free" > Create account
+3. Create FREE cluster (M0 tier - no credit card)
+4. Username: `admin`, Password: `yourpassword123`
+5. Network Access > Add IP > "Allow Access from Anywhere" (0.0.0.0/0)
+6. Click "Connect" > "Drivers" > Copy connection string
+7. Replace `<username>`, `<password>` in the string
+
+**Option B: Local MongoDB**
+1. Download: https://www.mongodb.com/try/download/community
+2. Install with default settings
+3. It runs automatically as Windows service
+
+### Step 3: Setup Project
+```bash
+# Extract ZIP file
+# Open CMD/Terminal in the project folder
+
+# Install dependencies
+npm install
+
+# Copy environment file
+copy .env.example .env
+
+# Edit .env file with your details
+notepad .env
+
+```
+
+
+
+
 
 ## ✨ Features
 
