@@ -1,0 +1,38 @@
+﻿<%- include("../partials/header") %>
+
+<div class="container py-4">
+    <h2 class="mb-4"><i class="fas fa-exclamation-triangle text-danger me-2"></i>Emergency Blood Requests</h2>
+
+    <% if (requests && requests.length > 0) { %>
+        <div class="row">
+            <% requests.forEach(request => { %>
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-danger h-100">
+                        <div class="card-header bg-<%= request.urgencyLevel === "critical" ? "danger" : request.urgencyLevel === "high" ? "warning" : "info" %> text-white">
+                            <h5 class="mb-0">
+                                <span class="badge bg-light text-dark me-2"><%= request.bloodGroup %></span>
+                                <%= request.patientName %>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Hospital:</strong> <%= request.hospitalName %></p>
+                            <p><strong>City:</strong> <%= request.city %></p>
+                            <p><strong>Units Needed:</strong> <%= request.unitsRequired %></p>
+                            <p><strong>Urgency:</strong> 
+                                <span class="badge bg-<%= request.urgencyLevel === "critical" ? "danger" : "warning" %>">
+                                    <%= request.urgencyLevel.toUpperCase() %>
+                                </span>
+                            </p>
+                            <p><strong>Posted:</strong> <%= new Date(request.createdAt).toLocaleDateString() %></p>
+                            <a href="/emergency/request/<%= request._id %>" class="btn btn-outline-danger btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="alert alert-info">No emergency requests at the moment.</div>
+    <% } %>
+</div>
+
+<%- include("../partials/footer") %>

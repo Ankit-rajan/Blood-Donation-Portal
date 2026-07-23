@@ -1,0 +1,138 @@
+<%- include('../partials/header') %>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="dashboard-card">
+                <div class="text-center mb-4">
+                    <img src="/uploads/profiles/<%= user.profileImage || 'default-profile.png' %>" 
+                         alt="Profile" class="rounded-circle mb-3" width="100" height="100">
+                    <h5><%= user.name %></h5>
+                    <span class="badge bg-<%= user.verificationStatus === 'verified' ? 'success' : 'warning' %>">
+                        <%= user.verificationStatus.charAt(0).toUpperCase() + user.verificationStatus.slice(1) %>
+                    </span>
+                </div>
+                
+                <hr>
+                
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="/donor/dashboard">
+                        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                    </a>
+                    <a class="nav-link" href="/donor/edit-profile">
+                        <i class="fas fa-user-edit me-2"></i>Edit Profile
+                    </a>
+                    <a class="nav-link" href="/donor/search">
+                        <i class="fas fa-search me-2"></i>Find Donors
+                    </a>
+                    <a class="nav-link" href="/emergency/requests">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Emergency Requests
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- Profile Completion -->
+            <div class="dashboard-card mb-4">
+                <h5>Profile Completion</h5>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: <%= profileCompletion %>%" 
+                         aria-valuenow="<%= profileCompletion %>" 
+                         aria-valuemin="0" aria-valuemax="100">
+                        <%= profileCompletion %>%
+                    </div>
+                </div>
+                <% if (profileCompletion < 100) { %>
+                    <small class="text-muted">Complete your profile to increase visibility</small>
+                <% } %>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="dashboard-card text-center">
+                        <i class="fas fa-hand-holding-heart fa-2x text-danger mb-2"></i>
+                        <h4><%= donationCount %></h4>
+                        <p class="text-muted mb-0">Total Donations</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="dashboard-card text-center">
+                        <i class="fas fa-calendar-check fa-2x text-success mb-2"></i>
+                        <h4>
+                            <%= user.availability ? 'Available' : 'Unavailable' %>
+                        </h4>
+                        <p class="text-muted mb-0">Current Status</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="dashboard-card text-center">
+                        <i class="fas fa-map-marker-alt fa-2x text-info mb-2"></i>
+                        <h4><%= user.city || 'N/A' %></h4>
+                        <p class="text-muted mb-0">Location</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nearby Emergency Requests -->
+            <div class="dashboard-card">
+                <h5 class="mb-3">
+                    <i class="fas fa-exclamation-circle text-danger me-2"></i>
+                    Nearby Emergency Requests
+                </h5>
+                
+                <% if (nearbyRequests && nearbyRequests.length > 0) { %>
+                    <% nearbyRequests.forEach(request => { %>
+                        <div class="alert alert-danger d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong><%= request.patientName %></strong> - 
+                                <span class="badge bg-dark"><%= request.bloodGroup %></span>
+                                <br>
+                                <small><%= request.hospitalName %>, <%= request.city %></small>
+                            </div>
+                            <a href="/emergency/request/<%= request._id %>" class="btn btn-sm btn-outline-danger">
+                                View Details
+                            </a>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p class="text-muted">No emergency requests in your area.</p>
+                <% } %>
+            </div>
+            
+            <!-- Add Donation Modal -->
+            <div class="dashboard-card mt-4">
+                <h5 class="mb-3">Record a Donation</h5>
+                <form action="/donor/add-donation" method="POST">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-control" name="date" required>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label">Units</label>
+                            <input type="number" class="form-control" name="units" min="1" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Hospital</label>
+                            <input type="text" class="form-control" name="hospital" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Patient Name</label>
+                            <input type="text" class="form-control" name="patientName">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-plus me-2"></i>Add Donation
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

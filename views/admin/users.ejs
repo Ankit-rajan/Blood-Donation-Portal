@@ -1,0 +1,52 @@
+﻿<%- include("../partials/header") %>
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">Manage Users</h2>
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Blood Group</th>
+                    <th>City</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.name %></td>
+                        <td><%= user.email %></td>
+                        <td><span class="badge bg-danger"><%= user.bloodGroup %></span></td>
+                        <td><%= user.city || "N/A" %></td>
+                        <td>
+                            <% if (user.verificationStatus === "verified") { %>
+                                <span class="badge bg-success">Verified</span>
+                            <% } else if (user.verificationStatus === "pending") { %>
+                                <span class="badge bg-warning">Pending</span>
+                            <% } else { %>
+                                <span class="badge bg-danger">Rejected</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <form action="/admin/verify-donor/<%= user._id %>" method="POST" style="display:inline;">
+                                <button class="btn btn-success btn-sm">Verify</button>
+                            </form>
+                            <form action="/admin/toggle-block/<%= user._id %>" method="POST" style="display:inline;">
+                                <button class="btn btn-warning btn-sm">Toggle Block</button>
+                            </form>
+                            <form action="/admin/delete-user/<%= user._id %>" method="POST" style="display:inline;">
+                                <button class="btn btn-danger btn-sm" onclick="return confirm("Delete this user?")">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>

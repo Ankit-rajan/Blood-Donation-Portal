@@ -1,0 +1,126 @@
+﻿<%- include("../partials/header") %>
+
+<div class="container py-4">
+    <h2 class="mb-4">Edit Profile</h2>
+    
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="/donor/edit-profile" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" class="form-control" name="name" value="<%= user.name %>" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone Number *</label>
+                        <input type="tel" class="form-control" name="phone" value="<%= user.phone %>" pattern="[0-9]{10}" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Blood Group *</label>
+                        <select class="form-select" name="bloodGroup" required>
+                            <% const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]; %>
+                            <% bloodGroups.forEach(group => { %>
+                                <option value="<%= group %>" <%= user.bloodGroup === group ? "selected" : "" %>>
+                                    <%= group %>
+                                </option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select" name="gender">
+                            <option value="">Select Gender</option>
+                            <option value="male" <%= user.gender === "male" ? "selected" : "" %>>Male</option>
+                            <option value="female" <%= user.gender === "female" ? "selected" : "" %>>Female</option>
+                            <option value="other" <%= user.gender === "other" ? "selected" : "" %>>Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" name="dateOfBirth" 
+                               value="<%= user.dateOfBirth ? user.dateOfBirth.toISOString().split("T")[0] : "" %>">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" name="address" rows="2"><%= user.address || "" %></textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" name="city" value="<%= user.city || "" %>">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">State</label>
+                        <input type="text" class="form-control" name="state" value="<%= user.state || "" %>">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Pincode</label>
+                        <input type="text" class="form-control" name="pincode" value="<%= user.pincode || "" %>" pattern="[0-9]{6}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Last Donation Date</label>
+                        <input type="date" class="form-control" name="lastDonationDate"
+                               value="<%= user.lastDonationDate ? user.lastDonationDate.toISOString().split("T")[0] : "" %>">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Medical Status</label>
+                        <select class="form-select" name="medicalStatus">
+                            <option value="healthy" <%= user.medicalStatus === "healthy" ? "selected" : "" %>>Healthy</option>
+                            <option value="under_medication" <%= user.medicalStatus === "under_medication" ? "selected" : "" %>>Under Medication</option>
+                            <option value="temporary_unavailable" <%= user.medicalStatus === "temporary_unavailable" ? "selected" : "" %>>Temporarily Unavailable</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="availability" 
+                               <%= user.availability ? "checked" : "" %>>
+                        <label class="form-check-label">Available for donation</label>
+                    </div>
+                </div>
+
+                <h5 class="mt-4 mb-3">Upload Documents</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Profile Photo</label>
+                        <input type="file" class="form-control" name="profileImage" accept="image/*">
+                        <% if (user.profileImage && user.profileImage !== "default-profile.png") { %>
+                            <small class="text-muted">Current: <%= user.profileImage %></small>
+                        <% } %>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Government ID</label>
+                        <input type="file" class="form-control" name="governmentId" accept="image/*,.pdf">
+                        <% if (user.governmentId) { %>
+                            <small class="text-muted">Current: <%= user.governmentId %></small>
+                        <% } %>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Blood Report</label>
+                        <input type="file" class="form-control" name="bloodReport" accept="image/*,.pdf">
+                        <% if (user.bloodReport) { %>
+                            <small class="text-muted">Current: <%= user.bloodReport %></small>
+                        <% } %>
+                    </div>
+                </div>
+
+                <hr>
+                <button type="submit" class="btn btn-danger btn-lg">
+                    <i class="fas fa-save me-2"></i>Update Profile
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>

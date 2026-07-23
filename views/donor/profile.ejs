@@ -1,0 +1,70 @@
+﻿<%- include("../partials/header") %>
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <img src="/uploads/profiles/<%= donor.profileImage || "default-profile.png" %>" 
+                         class="rounded-circle mb-3" width="150" height="150" style="object-fit: cover;">
+                    <h4><%= donor.name %></h4>
+                    <span class="badge bg-danger p-2 mb-2" style="font-size: 1.2rem;"><%= donor.bloodGroup %></span>
+                    
+                    <% if (donor.availability) { %>
+                        <span class="badge bg-success d-block mb-3">Available for Donation</span>
+                    <% } else { %>
+                        <span class="badge bg-secondary d-block mb-3">Currently Unavailable</span>
+                    <% } %>
+                    
+                    <a href="tel:<%= donor.phone %>" class="btn btn-danger w-100 mb-2">
+                        <i class="fas fa-phone me-2"></i>Contact Donor
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Donor Information</h5>
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <strong><i class="fas fa-envelope text-danger me-2"></i>Email:</strong>
+                            <p><%= donor.email %></p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong><i class="fas fa-phone text-danger me-2"></i>Phone:</strong>
+                            <p><%= donor.phone %></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <strong><i class="fas fa-map-marker-alt text-danger me-2"></i>Location:</strong>
+                            <p><%= donor.city || "N/A" %>, <%= donor.state || "" %> - <%= donor.pincode || "" %></p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong><i class="fas fa-calendar text-danger me-2"></i>Last Donation:</strong>
+                            <p><%= donor.lastDonationDate ? donor.lastDonationDate.toDateString() : "Not Available" %></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <strong><i class="fas fa-venus-mars text-danger me-2"></i>Gender:</strong>
+                            <p><%= donor.gender ? donor.gender.charAt(0).toUpperCase() + donor.gender.slice(1) : "N/A" %></p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <strong><i class="fas fa-user-md text-danger me-2"></i>Medical Status:</strong>
+                            <p><%= donor.medicalStatus ? donor.medicalStatus.replace("_", " ").replace(/\b\w/g, l => l.toUpperCase()) : "N/A" %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>

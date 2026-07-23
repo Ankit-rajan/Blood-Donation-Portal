@@ -1,0 +1,62 @@
+﻿<%- include("../partials/header") %>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="mb-4">
+                <i class="fas fa-heart-broken fa-6x text-danger mb-4"></i>
+                <h1 class="display-1 fw-bold text-danger">404</h1>
+                <h2 class="mb-3">Page Not Found</h2>
+                <p class="lead text-muted mb-4">Oops! The page you're looking for doesn't exist or has been moved.</p>
+                <p class="text-muted mb-4">Don't worry, even the best donors miss sometimes. Let's get you back on track.</p>
+                
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="/" class="btn btn-danger btn-lg">
+                        <i class="fas fa-home me-2"></i>Back to Home
+                    </a>
+                    <a href="/donor/search" class="btn btn-outline-danger btn-lg">
+                        <i class="fas fa-search me-2"></i>Find Donors
+                    </a>
+                    <a href="/contact" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-envelope me-2"></i>Contact Us
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-5">
+                <p class="text-muted">Here are some helpful links:</p>
+                <div class="row">
+                    <div class="col-6 col-md-3 mb-3">
+                        <a href="/about" class="text-decoration-none">
+                            <div class="card p-3">About Us</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <a href="/auth/register" class="text-decoration-none">
+                            <div class="card p-3">Register</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <a href="/auth/login" class="text-decoration-none">
+                            <div class="card p-3">Login</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <a href="/emergency/create" class="text-decoration-none">
+                            <div class="card p-3">Emergency</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-redirect after 10 seconds
+    setTimeout(function() {
+        window.location.href = "/";
+    }, 10000);
+</script>
+
+<%- include("../partials/footer") %>

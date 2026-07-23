@@ -1,0 +1,53 @@
+﻿<%- include("../partials/header") %>
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">Emergency Requests</h2>
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Blood Group</th>
+                    <th>Hospital</th>
+                    <th>City</th>
+                    <th>Urgency</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (requests && requests.length > 0) { %>
+                    <% requests.forEach(request => { %>
+                        <tr>
+                            <td><%= request.patientName %></td>
+                            <td><span class="badge bg-danger"><%= request.bloodGroup %></span></td>
+                            <td><%= request.hospitalName %></td>
+                            <td><%= request.city %></td>
+                            <td>
+                                <span class="badge bg-<%= request.urgencyLevel === "critical" ? "danger" : "warning" %>">
+                                    <%= request.urgencyLevel %>
+                                </span>
+                            </td>
+                            <td><%= request.status %></td>
+                            <td>
+                                <form action="/admin/update-request/<%= request._id %>" method="POST" style="display:inline;">
+                                    <input type="hidden" name="status" value="fulfilled">
+                                    <button class="btn btn-success btn-sm">Fulfill</button>
+                                </form>
+                                <form action="/admin/update-request/<%= request._id %>" method="POST" style="display:inline;">
+                                    <input type="hidden" name="status" value="cancelled">
+                                    <button class="btn btn-secondary btn-sm">Cancel</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr><td colspan="7" class="text-center">No emergency requests found</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>

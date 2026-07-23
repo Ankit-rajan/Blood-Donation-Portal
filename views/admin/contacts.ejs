@@ -1,0 +1,50 @@
+﻿<%- include("../partials/header") %>
+
+<div class="container-fluid py-4">
+    <h2 class="mb-4">Contact Messages</h2>
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (messages && messages.length > 0) { %>
+                    <% messages.forEach(msg => { %>
+                        <tr class="<%= !msg.isRead ? "table-warning" : "" %>">
+                            <td><%= msg.name %></td>
+                            <td><%= msg.email %></td>
+                            <td><%= msg.subject %></td>
+                            <td><%= msg.message.substring(0, 50) %>...</td>
+                            <td><%= new Date(msg.createdAt).toLocaleDateString() %></td>
+                            <td>
+                                <span class="badge bg-<%= msg.isRead ? "success" : "warning" %>">
+                                    <%= msg.isRead ? "Read" : "Unread" %>
+                                </span>
+                            </td>
+                            <td>
+                                <% if (!msg.isRead) { %>
+                                    <form action="/admin/mark-read/<%= msg._id %>" method="POST">
+                                        <button class="btn btn-sm btn-primary">Mark Read</button>
+                                    </form>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr><td colspan="7" class="text-center">No messages found</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>

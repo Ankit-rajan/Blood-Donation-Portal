@@ -1,0 +1,69 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-lg-5">
+            <div class="form-container" data-aos="fade-up">
+                <div class="text-center mb-4">
+                    <i class="fas fa-heartbeat fa-3x text-danger mb-3"></i>
+                    <h2>Welcome Back</h2>
+                    <p class="text-muted">Login to your account</p>
+                </div>
+                
+                <form id="loginForm" action="/auth/login" method="POST">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="email" name="email" required 
+                                   placeholder="Enter your email">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" required 
+                                   placeholder="Enter your password">
+                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-danger w-100 mb-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                    
+                    <div class="text-center">
+                        <a href="/auth/forgot-password" class="text-danger">Forgot Password?</a>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="text-center">
+                        <p class="mb-0">Don't have an account? 
+                            <a href="/auth/register" class="text-danger fw-bold">Register here</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+}
+</script>
+
+<%- include('../partials/footer') %>
