@@ -1,23 +1,17 @@
 ﻿<%- include("../partials/header") %>
 
 <!-- Hero Section -->
-<div class="hero-section bg-danger text-white">
-    <div class="container py-5">
+<div class="bg-danger text-white py-5">
+    <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6" data-aos="fade-right">
-                <h1 class="display-3 fw-bold mb-4">Donate Blood,<br>Save Lives</h1>
-                <p class="lead mb-4">Every drop of blood can save someone's life. Join our community of heroes and make a difference today.</p>
-                <div class="d-flex gap-3 flex-wrap">
-                    <a href="/auth/register" class="btn btn-light btn-lg text-danger fw-bold px-4">
-                        <i class="fas fa-user-plus me-2"></i>Become a Donor
-                    </a>
-                    <a href="/emergency/create" class="btn btn-outline-light btn-lg px-4">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Emergency Request
-                    </a>
-                </div>
+            <div class="col-md-6">
+                <h1 class="display-4 fw-bold">Donate Blood, Save Lives</h1>
+                <p class="lead">Every drop of blood can save someone's life. Join our community of heroes today.</p>
+                <a href="/auth/register" class="btn btn-light btn-lg text-danger fw-bold mt-3">Become a Donor</a>
+                <a href="/emergency/create" class="btn btn-outline-light btn-lg mt-3 ms-2">Emergency Request</a>
             </div>
-            <div class="col-lg-6 text-center mt-4 mt-lg-0" data-aos="fade-left">
-                <i class="fas fa-heartbeat fa-10x text-white opacity-50"></i>
+            <div class="col-md-6 text-center">
+                <i class="fas fa-heartbeat fa-8x text-white opacity-50"></i>
             </div>
         </div>
     </div>
@@ -26,25 +20,31 @@
 <!-- Stats Section -->
 <div class="container py-5">
     <div class="row text-center">
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="stat-card bg-white p-4 rounded shadow-sm">
-                <i class="fas fa-users fa-3x text-danger mb-3"></i>
-                <h3 class="fw-bold counter" data-target="<%= stats.totalDonors %>"><%= stats.totalDonors %></h3>
-                <p class="text-muted mb-0">Registered Donors</p>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-users fa-3x text-danger mb-3"></i>
+                    <h3 class="fw-bold"><%= stats.totalDonors %></h3>
+                    <p class="text-muted">Registered Donors</p>
+                </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="stat-card bg-white p-4 rounded shadow-sm">
-                <i class="fas fa-clock fa-3x text-danger mb-3"></i>
-                <h3 class="fw-bold counter" data-target="<%= stats.activeRequests %>"><%= stats.activeRequests %></h3>
-                <p class="text-muted mb-0">Active Requests</p>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-clock fa-3x text-danger mb-3"></i>
+                    <h3 class="fw-bold"><%= stats.activeRequests %></h3>
+                    <p class="text-muted">Active Requests</p>
+                </div>
             </div>
         </div>
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="stat-card bg-white p-4 rounded shadow-sm">
-                <i class="fas fa-heart fa-3x text-danger mb-3"></i>
-                <h3 class="fw-bold counter" data-target="<%= stats.livesSaved %>"><%= stats.livesSaved %></h3>
-                <p class="text-muted mb-0">Lives Saved</p>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-heart fa-3x text-danger mb-3"></i>
+                    <h3 class="fw-bold"><%= stats.livesSaved %></h3>
+                    <p class="text-muted">Lives Saved</p>
+                </div>
             </div>
         </div>
     </div>
@@ -53,32 +53,32 @@
 <!-- Features Section -->
 <div class="bg-light py-5">
     <div class="container">
-        <h2 class="text-center mb-5" data-aos="fade-up">Why Choose BloodConnect?</h2>
+        <h2 class="text-center mb-5">Why Choose BloodConnect?</h2>
         <div class="row">
-            <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="card h-100 text-center p-4">
-                    <div class="card-body">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center border-0 shadow-sm">
+                    <div class="card-body p-4">
                         <i class="fas fa-search fa-3x text-danger mb-3"></i>
                         <h4>Quick Search</h4>
-                        <p class="text-muted">Find blood donors near you instantly with our advanced search system. Filter by blood group, city, and more.</p>
+                        <p class="text-muted">Find blood donors near you instantly.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="card h-100 text-center p-4">
-                    <div class="card-body">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center border-0 shadow-sm">
+                    <div class="card-body p-4">
                         <i class="fas fa-shield-alt fa-3x text-danger mb-3"></i>
                         <h4>Verified Donors</h4>
-                        <p class="text-muted">All donors are verified through proper documentation and medical reports for your safety.</p>
+                        <p class="text-muted">All donors are properly verified.</p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="card h-100 text-center p-4">
-                    <div class="card-body">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center border-0 shadow-sm">
+                    <div class="card-body p-4">
                         <i class="fas fa-bolt fa-3x text-danger mb-3"></i>
                         <h4>Emergency Response</h4>
-                        <p class="text-muted">Instant email notifications to nearby matching donors in case of emergency blood requests.</p>
+                        <p class="text-muted">Instant alerts to nearby donors.</p>
                     </div>
                 </div>
             </div>
@@ -86,97 +86,98 @@
     </div>
 </div>
 
-<!-- How It Works -->
-<div class="container py-5">
-    <h2 class="text-center mb-5" data-aos="fade-up">How It Works</h2>
-    <div class="row">
-        <div class="col-md-3 text-center mb-4" data-aos="zoom-in" data-aos-delay="100">
-            <div class="mb-3">
-                <span class="badge bg-danger rounded-circle p-3" style="font-size: 2rem;">1</span>
-            </div>
-            <h5>Register</h5>
-            <p class="text-muted">Create your account as a blood donor</p>
-        </div>
-        <div class="col-md-3 text-center mb-4" data-aos="zoom-in" data-aos-delay="200">
-            <div class="mb-3">
-                <span class="badge bg-danger rounded-circle p-3" style="font-size: 2rem;">2</span>
-            </div>
-            <h5>Get Verified</h5>
-            <p class="text-muted">Upload your documents for verification</p>
-        </div>
-        <div class="col-md-3 text-center mb-4" data-aos="zoom-in" data-aos-delay="300">
-            <div class="mb-3">
-                <span class="badge bg-danger rounded-circle p-3" style="font-size: 2rem;">3</span>
-            </div>
-            <h5>Receive Alerts</h5>
-            <p class="text-muted">Get notified when someone needs blood</p>
-        </div>
-        <div class="col-md-3 text-center mb-4" data-aos="zoom-in" data-aos-delay="400">
-            <div class="mb-3">
-                <span class="badge bg-danger rounded-circle p-3" style="font-size: 2rem;">4</span>
-            </div>
-            <h5>Save Lives</h5>
-            <p class="text-muted">Donate blood and make a difference</p>
-        </div>
-    </div>
-</div>
-
-<!-- Blood Groups Info -->
+<!-- Blood Groups - CLICKABLE with WHITE TEXT -->
 <div class="bg-danger text-white py-5">
-    <div class="container">
-        <h2 class="text-center mb-4">Blood Groups We Need</h2>
-        <div class="row text-center">
+    <div class="container text-center">
+        <h2 class="mb-4">Find Donors by Blood Group</h2>
+        <p class="mb-4">Click on any blood group to find available donors</p>
+        <div class="row">
             <div class="col-6 col-md-3 mb-3">
-                <div class="p-3 bg-white bg-opacity-25 rounded">
-                    <h3 class="mb-0">A+</h3>
-                </div>
+                <a href="/donor/search?bloodGroup=A%2B" class="text-decoration-none text-white">
+                    <div class="bg-white bg-opacity-25 rounded p-4 blood-group-card">
+                        <h3 class="mb-0 fw-bold">A+</h3>
+                        <small>Click to search</small>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="p-3 bg-white bg-opacity-25 rounded">
-                    <h3 class="mb-0">B+</h3>
-                </div>
+                <a href="/donor/search?bloodGroup=B%2B" class="text-decoration-none text-white">
+                    <div class="bg-white bg-opacity-25 rounded p-4 blood-group-card">
+                        <h3 class="mb-0 fw-bold">B+</h3>
+                        <small>Click to search</small>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="p-3 bg-white bg-opacity-25 rounded">
-                    <h3 class="mb-0">O+</h3>
-                </div>
+                <a href="/donor/search?bloodGroup=O%2B" class="text-decoration-none text-white">
+                    <div class="bg-white bg-opacity-25 rounded p-4 blood-group-card">
+                        <h3 class="mb-0 fw-bold">O+</h3>
+                        <small>Click to search</small>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="p-3 bg-white bg-opacity-25 rounded">
-                    <h3 class="mb-0">AB+</h3>
-                </div>
+                <a href="/donor/search?bloodGroup=AB%2B" class="text-decoration-none text-white">
+                    <div class="bg-white bg-opacity-25 rounded p-4 blood-group-card">
+                        <h3 class="mb-0 fw-bold">AB+</h3>
+                        <small>Click to search</small>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="p-3 bg-white bg-opacity-25 rounded">
-                    <h3 class="mb-0">A-</h3>
-                </div>
+                <a href="/donor/search?bloodGroup=A-" class="text-decoration-none text-white">
+                    <div class="bg-white bg-opacity-25 rounded p-4 blood-group-card">
+                        <h3 class="mb-0 fw-bold">A-</h3>
+                        <small>Click to search</small>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="p-3 bg-white bg-opacity-25 rounded">
-                    <h3 class="mb-0">B-</h3>
-                </div>
+                <a href="/donor/search?bloodGroup=B-" class="text-decoration-none text-white">
+                    <div class="bg-white bg-opacity-25 rounded p-4 blood-group-card">
+                        <h3 class="mb-0 fw-bold">B-</h3>
+                        <small>Click to search</small>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="p-3 bg-white bg-opacity-25 rounded">
-                    <h3 class="mb-0">O-</h3>
-                </div>
+                <a href="/donor/search?bloodGroup=O-" class="text-decoration-none text-white">
+                    <div class="bg-white bg-opacity-25 rounded p-4 blood-group-card">
+                        <h3 class="mb-0 fw-bold">O-</h3>
+                        <small>Click to search</small>
+                    </div>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="p-3 bg-white bg-opacity-25 rounded">
-                    <h3 class="mb-0">AB-</h3>
-                </div>
+                <a href="/donor/search?bloodGroup=AB-" class="text-decoration-none text-white">
+                    <div class="bg-white bg-opacity-25 rounded p-4 blood-group-card">
+                        <h3 class="mb-0 fw-bold">AB-</h3>
+                        <small>Click to search</small>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Call to Action -->
-<div class="container py-5 text-center" data-aos="zoom-in">
+<div class="container py-5 text-center">
     <h2 class="mb-4">Ready to Save Lives?</h2>
-    <p class="lead mb-4">Join thousands of donors who are making a difference every day. Your blood can give someone another chance at life.</p>
-    <a href="/auth/register" class="btn btn-danger btn-lg px-5 py-3">
-        <i class="fas fa-hand-holding-heart me-2"></i>Register as a Donor Now
-    </a>
+    <p class="lead mb-4">Join thousands of donors making a difference every day.</p>
+    <a href="/auth/register" class="btn btn-danger btn-lg px-5">Register as a Donor Now</a>
 </div>
+
+<style>
+.blood-group-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+.blood-group-card:hover {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+    transform: scale(1.1);
+    border-color: white;
+}
+</style>
 
 <%- include("../partials/footer") %>
